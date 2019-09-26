@@ -3,6 +3,8 @@
 
 <p> <%= @post.content %></p>
 
+
+
 <h3> This post belongs to the following categories: </h3>
 <ul>
   <%= @post.categories.each do |category| %>
@@ -13,13 +15,17 @@
 <h3> Comments for this post: </h3>
 <ul>
   <% @post.comments.each do |c| %>
-    <li> <%= c.user.username %> says: <%= c.content %> </li>
+    <% if c.id && c.content && c.user%>
+      <li> <%= c.user.username %> says: <%= c.content %> </li>
+    <% end %>
   <% end %>
 </ul>
 
 <h3> Users who have commented on this post: </h3>
 <ul>
-  <%= @post.users.uniq.each do |commentor| %>
-    <li>  <%= link_to commentor.username, user_path(commentor) %> </li>
-  <% end %>
+  <% if @post.users.length >= 1 %>
+    <%= @post.users.uniq.each do |commentor| %>
+      <li>  <%= link_to commentor.username, user_path(commentor) %> </li>
+    <% end %>
+  <%end%>
 </ul>
