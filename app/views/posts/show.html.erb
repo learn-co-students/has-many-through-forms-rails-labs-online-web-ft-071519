@@ -1,1 +1,36 @@
+<h1><%= @post.title %></h1>
+Categories: 
+<% @post.categories.each do |category| %>
+    <%= category.name %>
+<% end %><br>
+Content: <%= @post.content %><br>
+<br>
+New Comment:<br>
+<%= form_for @post.comments.build do |f| %>
+    <%= f.label :content %>
+    <%= f.text_field :content %><br>
 
+    <%= f.hidden_field :post_id, value: @post.id %>
+
+    <%= f.label :username %><br>
+    <%= f.select :user_id, User.all.collect { |user| [user.username] } %>
+    <%= f.fields_for :user, @post.users.build do |user_field| %>
+        <%= user_field.text_field :username %>
+    <% end %>
+
+    <%= f.submit %>
+
+<% end %><br>
+
+Comments:<br>
+<% if @post.comments.length > 0 %>
+    <% @post.comments.each do |comment| %>
+    <%# <%binding.pry%>
+        <%= "#{comment.user.username} says: #{comment.content}" %>
+    <% end %>
+<% end %>
+
+Users who have commented:
+<% @post.comments.map do |comment| %>
+    <%= User.find(comment.user_id) %>
+<% end.uniq %>

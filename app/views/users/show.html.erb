@@ -1,1 +1,7 @@
-
+<%= @user.name %>
+Comments
+<ul>
+<% @user.comments.each do |comment| %>
+    <li><%= comment.content %></li>
+<% end %>
+</ul>
