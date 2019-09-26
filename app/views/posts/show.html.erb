@@ -3,6 +3,26 @@
 
 <p> <%= @post.content %></p>
 
+<!-- Form to leave a comment on this post & either select or input a username: -->
+<h3> Comment on this post: </h3>
+<%= form_for @comment do |f| %>
+  <!-- hidden field to send along post_id: -->
+  <%= f.hidden_field :post_id %>
+
+  <%= f.label :content %>
+  <%= f.text_field :content %> <br>
+
+<!-- select menu to choose an existing user: -->
+  <%= f.collection_select(:user_id, @users, :id, :username) %>
+
+<!-- form to enter username for a new user: -->
+  <%= f.fields_for :user, User.new do |user_info| %>
+    <%= user_info.label :username %>
+    <%= user_info.text_field :username %>
+  <% end %>
+
+  <%= f.submit %>
+<% end %>
 
 
 <h3> This post belongs to the following categories: </h3>
@@ -15,9 +35,7 @@
 <h3> Comments for this post: </h3>
 <ul>
   <% @post.comments.each do |c| %>
-    <% if c.id && c.content && c.user%>
       <li> <%= c.user.username %> says: <%= c.content %> </li>
-    <% end %>
   <% end %>
 </ul>
 

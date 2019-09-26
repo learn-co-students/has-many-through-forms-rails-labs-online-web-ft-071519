@@ -3,7 +3,7 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     @comment = @post.comments.build
     @users = User.all
-    @new_user = User.new
+    #@new_user = User.new
   end
 
   def index
@@ -13,8 +13,8 @@ class PostsController < ApplicationController
   def new
     @post = Post.new
     @categories = Category.all
-    @category1 = @post.categories.build
-    @category2 = @post.categories.build
+    @category = @post.categories.build
+    @comment = @post.comments.build
   end
 
   def create

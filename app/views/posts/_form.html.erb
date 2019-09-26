@@ -9,11 +9,7 @@
   <%= f.collection_check_boxes :category_ids, @categories, :id, :name %> <br> 
   
 
-  <%= f.fields_for :categories, @category1 do |cat_builder| %>
-    <%= cat_builder.text_field :name %>
-  <% end %> <br>
-
-  <%= f.fields_for :categories, @category2 do |cat_builder| %>
+  <%= f.fields_for :categories, @category do |cat_builder| %>
     <%= cat_builder.text_field :name %>
   <% end %> <br>
 
