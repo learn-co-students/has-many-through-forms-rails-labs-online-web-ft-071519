@@ -1,1 +1,14 @@
+<%= @user.username %>
+Comments
+<ul>
+<% @user.comments.each do |comment| %>
+    <li><%= comment.content %></li>
+<% end %>
+</ul>
 
+Posts Commented On:
+<ul>
+<% @user.posts.each do |post| %>
+    <li><%= link_to post.title, post_path(post) %></li>
+<% end %>
+</ul>
