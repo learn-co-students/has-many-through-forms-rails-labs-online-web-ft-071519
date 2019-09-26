@@ -1,1 +1,51 @@
 
+<h1> <%= @post.title %> </h1>
+
+<p> <%= @post.content %></p>
+
+<!-- Form to leave a comment on this post & either select or input a username: -->
+<h3> Comment on this post: </h3>
+<%= form_for @comment do |f| %>
+  <!-- hidden field to send along post_id: -->
+  <%= f.hidden_field :post_id %>
+
+  <!-- select menu to choose an existing user: -->
+  <%= f.collection_select(:user_id, @users, :id, :username, include_blank: 'Enter a new username') %>
+
+<!-- form to enter username for a new user: -->
+  <%= f.fields_for :user, User.new do |user_info| %>
+    <%= user_info.label :username %>
+    <%= user_info.text_field :username %>
+  <% end %>
+
+  <%= f.label :content %>
+  <%= f.text_field :content %> <br>
+
+  <%= f.submit %>
+<% end %>
+
+
+<h3> This post belongs to the following categories: </h3>
+<ul>
+  <%= @post.categories.each do |category| %>
+    <li> <%= category.name %> </li>
+  <% end %>
+</ul>
+
+<h3> Comments for this post: </h3>
+<ul>
+  <% @post.comments.each do |c| %>
+    <% if c.id && c.content && c.user%>
+      <li> <%= c.user.username %> says: <%= c.content %> </li>
+    <% end %>
+  <% end %>
+</ul>
+
+<h3> Users who have commented on this post: </h3>
+<ul>
+  <% if @post.users.length >= 1 %>
+    <%= @post.users.uniq.each do |commentor| %>
+      <li>  <%= link_to commentor.username, user_path(commentor) %> </li>
+    <% end %>
+  <%end%>
+</ul>

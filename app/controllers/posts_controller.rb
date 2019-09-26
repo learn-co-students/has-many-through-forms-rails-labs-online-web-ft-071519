@@ -1,6 +1,9 @@
 class PostsController < ApplicationController
   def show
     @post = Post.find(params[:id])
+    @comment = @post.comments.build
+    @users = User.all
+    #@new_user = User.new
   end
 
   def index
@@ -9,9 +12,13 @@ class PostsController < ApplicationController
 
   def new
     @post = Post.new
+    @categories = Category.all
+    @category = @post.categories.build
+    @comment = @post.comments.build
   end
 
   def create
+   #binding.pry
     post = Post.create(post_params)
     redirect_to post
   end
