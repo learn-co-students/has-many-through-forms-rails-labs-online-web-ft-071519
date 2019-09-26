@@ -3,18 +3,19 @@ Categories:
 <% @post.categories.each do |category| %>
     <%= category.name %>
 <% end %><br>
+
 Content: <%= @post.content %><br>
 <br>
 New Comment:<br>
-<%= form_for @post.comments.build do |f| %>
+<%= form_for (@comment = Comment.new) do |f| %>
     <%= f.label :content %>
     <%= f.text_field :content %><br>
 
     <%= f.hidden_field :post_id, value: @post.id %>
 
     <%= f.label :username %><br>
-    <%= f.select :user_id, User.all.collect { |user| [user.username] } %>
-    <%= f.fields_for :user, @post.users.build do |user_field| %>
+    <%= f.collection_select :user_id, User.all, :id, :username, :include_blank => true %>
+    <%= f.fields_for :user, @comment.build_user do |user_field| %>
         <%= user_field.text_field :username %>
     <% end %>
 
@@ -25,12 +26,15 @@ New Comment:<br>
 Comments:<br>
 <% if @post.comments.length > 0 %>
     <% @post.comments.each do |comment| %>
-    <%# <%binding.pry%>
+    <%# <%binding.pry %> %>
         <%= "#{comment.user.username} says: #{comment.content}" %>
     <% end %>
 <% end %>
 
 Users who have commented:
-<% @post.comments.map do |comment| %>
-    <%= User.find(comment.user_id) %>
-<% end.uniq %>
+<ul>
+<% @post.users.uniq.each do |user| %>
+    <%# <%binding.pry %> %>
+    <li><%= link_to user.username, user_path(user) %></li>
+<% end %>
+</ul>
