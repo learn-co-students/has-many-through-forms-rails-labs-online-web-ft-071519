@@ -17,13 +17,13 @@ class Post < ActiveRecord::Base
     end
   end
 
-  def category_ids=(ids)
-    ids.each do |id|
-      category = Category.find_or_create_by(id: id)
-      if category.name != "" && !self.categories.include?(category)
-          self.post_categories.build(:category => category)
-      end
-    end
-  end
+  # def category_ids=(ids)
+  #   ids.each do |id|
+  #     category = Category.find_or_create_by(id: id)
+  #     if category.name != "" && !self.categories.include?(category)
+  #         self.post_categories.build(:category => category)
+  #     end
+  #   end
+  # end
 
 end

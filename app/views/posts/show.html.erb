@@ -1,1 +1,25 @@
 
+<h1> <%= @post.title %> </h1>
+
+<p> <%= @post.content %></p>
+
+<h3> This post belongs to the following categories: </h3>
+<ul>
+  <%= @post.categories.each do |category| %>
+    <li> <%= category.name %> </li>
+  <% end %>
+</ul>
+
+<h3> Comments for this post: </h3>
+<ul>
+  <% @post.comments.each do |c| %>
+    <li> <%= c.user.username %> says: <%= c.content %> </li>
+  <% end %>
+</ul>
+
+<h3> Users who have commented on this post: </h3>
+<ul>
+  <%= @post.users.uniq.each do |commentor| %>
+    <li>  <%= link_to commentor.username, user_path(commentor) %> </li>
+  <% end %>
+</ul>
