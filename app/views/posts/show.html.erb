@@ -1,1 +1,50 @@
+<!--should display the title-->
+<h1><%= @post.title %></h1>
 
+<!--should display the content-->
+<p><%= @post.content %></p>
+<!--should display the categories-->
+<h2>Categories:</h2>
+<ul>
+  <% @post.categories.each do |c| %>
+    <li><%= c.name %></li>
+  <% end %>
+</ul>
+<!--should display all of the comments for that post-->
+<h2>Comments:</h2>
+<ol>
+  <% @post.comments.each do |c| %>
+    <li><%= c.comment_username %> says: <%= c.content %></li>
+  <% end %>
+</ol>
+
+<!--should display a list of unique users who have commented on the post-->
+<h2>Commentors:</h2>
+<ul>
+  <% @post.commentors_list.each do |user| %>
+    <li><%= link_to user.username, user_path(user) %></li>
+  <% end %>
+</ul>
+
+
+<h2>Leave a Comment:</h2>
+<!--A form to add a new comment. The form should have a drop-down menu to select a user (we'll change this in future lessons to automatically associate the comment with a logged-in user). We should also be able to create a new user here and automatically associate it with the post. To associate a new comment with a post, you'll have to use a hidden field:-->
+<%#= f.hidden_field :post_id, value: @post.id %>
+<%= form_for @post.comments.build do |f| %>
+  <%= f.hidden_field :post_id, value: @post.id %>
+
+<!--  dropdown of users-->
+  <%= f.label "Username:" %>
+  <%= f.collection_select :user_id, User.all, :id, :username, {include_blank: 'Create New User'} %>
+  <%= f.fields_for :user, User.new do |users_fields| %>
+    <%= users_fields.text_field :username %><br><br>
+    <%= f.label "Email:" %>
+    <%= users_fields.email_field :email %>
+  <% end %>
+  <br>
+
+  <%= f.label "Comment Content:" %><br>
+  <%= f.text_area :content %>
+  <br>
+  <%= f.submit %>
+<% end %>
